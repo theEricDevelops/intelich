@@ -1,0 +1,22 @@
+<h1>Hail Events</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Location</th>
+      <th>Size (inches)</th>
+      <th>Date/Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for event in page_obj %}
+      <tr>
+        <td>{{ event.location.y }}, {{ event.location.x }}</td>
+        <td>{{ event.size }}</td>
+        <td>{{ event.date_time_event }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% include '_pagination.html' %}

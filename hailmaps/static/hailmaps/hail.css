@@ -1,0 +1,22 @@
+/* This CSS file is used to style the hail module. */
+#menu-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #004080; /* Change this to your preferred color */
+}
+
+#menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+#map {
+    position: absolute;
+    top: 50px; /* Height of the menu bar */
+    bottom: 0;
+    width: 100%;
+}

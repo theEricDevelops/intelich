@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="menu-container">
+    <div id="menu">
+        <form id="location-form">
+            <input type="text" id="location" placeholder="Location">
+            <input type="text" id="radius" placeholder="Radius in miles">
+            <input type="text" id="size" placeholder="Size in inches">
+            <input type="date" id="start-date">
+            <input type="date" id="end-date">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+<div id='map'></div>
+
+<script>
+    function getColor(size) {
+        if (size < 1) {
+            return "green";
+        } else if (size < 2) {
+            return "yellow";
+        } else if (size < 3) {
+            return "orange";
+        } else {
+            return "red";
+        }
+    }
+
+    var map = L.map('map').setView([39.8283, -98.5795], 4);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var hailEventsGeojson = {{ hail_events_geojson|safe }};
+    L.geoJSON(hailEventsGeojson, {
+        pointToLayer: function (feature, latlng) {
+            // TODO: Change the circle marker size based on the size of the hail
+            return L.circleMarker(latlng, {
+                radius: feature.properties.size * 5,
+                fillColor: getColor(feature.properties.size),
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+        },
+        onEachFeature: function (feature, layer) {
+            var popupContent = `Size: ${feature.properties.size} inches<br>Date/Time: ${feature.properties.date_time_event}`;
+            layer.bindPopup(popupContent);
+        }
+    }).addTo(map);
+</script>
+
+{% endblock %}
